@@ -1,16 +1,21 @@
 import sys
 
+import global_seq
+
 debug = True
 
 
 def print_ui():
     print "1 - wyznaczanie globalnej sekwencji (Needleman-Wunsh)"
     print "2 - wyznaczanie lokalnej sekwencji (Smith-Waterman)"
+    print "3 - translacja RNA na aminokwasy"
     print "x - Wyjscie"
 
 
+# Mozna sobie dopisywac kolejne obslugi rzeczy z menu
 command_map = {
-    "x": sys.exit
+    "x": sys.exit,
+    "1": global_seq.run_global_sequence_algorithm
 }
 
 
@@ -33,3 +38,6 @@ if __name__ == "__main__":
         except EOFError:
             sys.exit()
         handle_ui(command)
+
+        print ""
+        print_ui()
