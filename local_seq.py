@@ -1,21 +1,20 @@
 import utils
 
-
 def init_score_matrix(rows, cols):
     matrix = utils.zeros_matrix(rows, cols)
     for row in range(rows):
-        matrix[row][0] = row * -1
+        matrix[row][0] = 0
 
     for col in range(cols):
-        matrix[0][col] = col * -1
+        matrix[0][col] = 0
 
     return matrix
 
 
-def run_traceback(start_index, dupa, seq1, seq2):
+def run_traceback(a, s, dupa, seq1, seq2):
     aseq1, aseq2 = "", ""
 
-    i, j = start_index
+    i, j, dummy = utils.matrix_max_index(a)
 
     aseq1 = ''
     aseq2 = ''
@@ -35,12 +34,13 @@ def run_traceback(start_index, dupa, seq1, seq2):
             aseq1 = '-' + aseq1
             aseq2 = seq2[j - 1] + aseq2
             j -= 1
+        elif dupa[i][j] == 'end' or dupa[i][j] == 0:
+            return aseq1, aseq2
 
     return aseq1, aseq2
 
 
-def run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2):
-    gap_penalty = 0
+def run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2, gap_penalty):
 
     for x, row in enumerate(score_matrix):
         for y, value in enumerate(row):
@@ -58,18 +58,16 @@ def run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2):
     return traceback_matrix
 
 
-def run_global_sequence_algorithm(seq1, seq2, sim_matrix):
+def run_local_sequence_algorithm(seq1, seq2, sim_matrix, gap_penalty=0):
 
     rows = len(seq1) + 1
     cols = len(seq2) + 1
 
-    traceback_matrix = utils.zeros_matrix(rows, cols)
     score_matrix = init_score_matrix(rows, cols)
+    traceback_matrix = init_score_matrix(rows, cols)
 
-    traceback_matrix = run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2)
+    traceback_matrix = run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2, gap_penalty)
+    result = run_traceback(score_matrix, sim_matrix, traceback_matrix, seq1, seq2)
+    return result
 
-    return run_traceback((rows-1, cols-1), traceback_matrix, seq1, seq2)
-
-run_global_sequence_algorithm("GCATGCT", "GATTACA", utils.similarity_matrix)
-
-
+run_local_sequence_algorithm("AGG", "ATG", utils.similarity_matrix, 0)
