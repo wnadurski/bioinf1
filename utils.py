@@ -44,3 +44,9 @@ def make_similarity_matrix(match=1, mismatch=-1):
     }
 
 similarity_matrix = make_similarity_matrix()
+
+
+def get_input(text=None):
+    if not text is None:
+        print text
+    return raw_input("> ")

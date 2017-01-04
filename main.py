@@ -1,6 +1,8 @@
 import sys
 
 import global_seq
+import handlers
+from utils import get_input
 
 debug = True
 
@@ -15,7 +17,8 @@ def print_ui():
 # Mozna sobie dopisywac kolejne obslugi rzeczy z menu
 command_map = {
     "x": sys.exit,
-    "1": global_seq.run_global_sequence_algorithm
+    "1": handlers.global_alignment,
+    "2": handlers.local_alignment
 }
 
 
@@ -34,7 +37,7 @@ if __name__ == "__main__":
 
     while True:
         try:
-            command = raw_input("> ")
+            command = get_input()
         except EOFError:
             sys.exit()
         handle_ui(command)
