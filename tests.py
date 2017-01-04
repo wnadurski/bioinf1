@@ -20,11 +20,12 @@ class LocalSeqTests(unittest.TestCase):
         result = local_seq.run_local_sequence_algorithm(seq1, seq2, utils.similarity_matrix)
         self.assertEquals(expected, result)
 
-    def test_fuckingSimple(self):
-        seq1 = "TAC"
-        seq2 = "TGC"
-        expected = "TAC", "T-C"
-        result = local_seq.run_local_sequence_algorithm(seq1, seq2, utils.similarity_matrix)
+    def test_BinfSnipacademy(self):
+        seq1 = "CGTTCTA"
+        seq2 = "AACGTTGG"
+        expected = "CGTT", "CGTT"
+        sim_matrix = utils.make_similarity_matrix(5, -3)
+        result = local_seq.run_local_sequence_algorithm(seq1, seq2, sim_matrix, -4)
         self.assertEquals(expected, result)
 
 
@@ -33,7 +34,15 @@ class GlobalSeqTests(unittest.TestCase):
         seq1 = "AATTATGCTTAATG"
         seq2 = "AGTCAATTTTAACTGA"
         expected = "----AATTATGCTTAA-TG-", "AGTCAATT----TTAACTGA"
-        result = global_seq.run_global_sequence_algorithm(seq1, seq2, utils.similarity_matrix)
+        result = global_seq.run_global_sequence_algorithm(seq1, seq2)
+        self.assertEquals(expected, result)
+
+    def test_BinfSnipacademy(self):
+        seq1 = "CGTTCTA"
+        seq2 = "AACGTTGG"
+        expected = "--CGTTCTA", "AACGTT-GG"
+        sim_matrix = utils.make_similarity_matrix(5, -3)
+        result = global_seq.run_global_sequence_algorithm(seq1, seq2, sim_matrix, -4)
         self.assertEquals(expected, result)
 
 

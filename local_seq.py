@@ -11,13 +11,10 @@ def init_score_matrix(rows, cols):
     return matrix
 
 
-def run_traceback(a, s, dupa, seq1, seq2):
+def run_traceback(a, dupa, seq1, seq2):
     aseq1, aseq2 = "", ""
 
-    i, j, dummy = utils.matrix_max_index(a)
-
-    aseq1 = ''
-    aseq2 = ''
+    i, j, dummy = a
 
     while i > 0 or j > 0:
 
@@ -67,7 +64,8 @@ def run_local_sequence_algorithm(seq1, seq2, sim_matrix, gap_penalty=0):
     traceback_matrix = init_score_matrix(rows, cols)
 
     traceback_matrix = run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2, gap_penalty)
-    result = run_traceback(score_matrix, sim_matrix, traceback_matrix, seq1, seq2)
+    max_index = utils.matrix_max_index(score_matrix)
+    result = run_traceback(max_index, traceback_matrix, seq1, seq2)
     return result
 
 run_local_sequence_algorithm("AGG", "ATG", utils.similarity_matrix, 0)
