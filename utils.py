@@ -1,5 +1,5 @@
-from collections import namedtuple
 from functools import reduce
+
 
 def zeros_matrix(len1, len2):
     matrix = []

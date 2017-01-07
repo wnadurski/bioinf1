@@ -12,7 +12,7 @@ class LocalSeqTests(unittest.TestCase):
         seq2 = "GACTTAC"
         expected1 = "GAATT-C", "GACTTAC"
         sim_matrix = utils.make_similarity_matrix(5, -3)
-        result = local_seq.run_local_sequence_algorithm(seq1, seq2, sim_matrix, -4)
+        result = local_seq.run_local_sequence_algorithm(seq1, seq2, sim_matrix, -4)[0]
         self.assertEquals(expected1, result)
 
     def test_BinfSnipacademy(self):
@@ -20,7 +20,7 @@ class LocalSeqTests(unittest.TestCase):
         seq2 = "AACGTTGG"
         expected = "CGTT", "CGTT"
         sim_matrix = utils.make_similarity_matrix(5, -3)
-        result = local_seq.run_local_sequence_algorithm(seq1, seq2, sim_matrix, -4)
+        result = local_seq.run_local_sequence_algorithm(seq1, seq2, sim_matrix, -4)[0]
         self.assertEquals(expected, result)
 
 
@@ -30,7 +30,7 @@ class GlobalSeqTests(unittest.TestCase):
         seq2 = "AACGTTGG"
         expected = "--CGTTCTA", "AACGTT-GG"
         sim_matrix = utils.make_similarity_matrix(5, -3)
-        result = global_seq.run_global_sequence_algorithm(seq1, seq2, sim_matrix, -4)
+        result = global_seq.run_global_sequence_algorithm(seq1, seq2, sim_matrix, -4)[0]
         self.assertEquals(expected, result)
 
 class ParsingTests(unittest.TestCase):

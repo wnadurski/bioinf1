@@ -37,7 +37,7 @@ def run_traceback(a, dupa, seq1, seq2):
     return aseq1, aseq2
 
 
-def run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2, gap_penalty):
+def run_fill_phase(score_matrix, traceback_matrix, distance_matrix, sim_matrix, seq1, seq2, gap_penalty):
 
     for x, row in enumerate(score_matrix):
         for y, value in enumerate(row):
@@ -49,7 +49,14 @@ def run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2, gap_p
                 score_top = 'top', score_matrix[x - 1][y] + gap_penalty
                 score_zero = 'end', 0
 
+                distance_left = score_matrix[x][y - 1] + 1
+                distance_top = score_matrix[x - 1][y] + 1
+                distance_diagonal = score_matrix[x - 1][y - 1] + (0 if seq1[x - 1] == seq2[y - 1] else 1)
+
+                min_distance = min(distance_left, distance_top, distance_diagonal)
                 max_score = reduce(utils.compare_values, [score_zero, score_left, score_diagonal, score_top])
+
+                distance_matrix[x][y] = min_distance
                 traceback_matrix[x][y], score_matrix[x][y] = max_score
 
     return traceback_matrix
@@ -62,10 +69,14 @@ def run_local_sequence_algorithm(seq1, seq2, sim_matrix, gap_penalty=0):
 
     score_matrix = init_score_matrix(rows, cols)
     traceback_matrix = init_score_matrix(rows, cols)
+    levenshtein_matrix = utils.zeros_matrix(rows, cols)
 
-    traceback_matrix = run_fill_phase(score_matrix, traceback_matrix, sim_matrix, seq1, seq2, gap_penalty)
+    traceback_matrix = run_fill_phase(score_matrix, traceback_matrix, levenshtein_matrix, sim_matrix, seq1, seq2, gap_penalty)
     max_index = utils.matrix_max_index(score_matrix)
     result = run_traceback(max_index, traceback_matrix, seq1, seq2)
-    return result
+    distance = levenshtein_matrix[rows - 1][cols - 1]
+    similarity_score = 1.0 / (1 + distance)
+
+    return result, (distance, similarity_score)
 
 run_local_sequence_algorithm("AGG", "ATG", utils.similarity_matrix, 0)
