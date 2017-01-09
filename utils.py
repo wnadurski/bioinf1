@@ -50,3 +50,13 @@ def get_input(text=None):
     if not text is None:
         print text
     return raw_input("> ")
+
+
+def get_command(allowed_values, message=None):
+    command = get_input()
+
+    if command not in allowed_values:
+        print "Niepoprawna komenda. Sprobuj jeszcze raz."
+        return get_command(allowed_values, message)
+
+    return command

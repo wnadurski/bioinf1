@@ -77,6 +77,6 @@ def run_global_sequence_algorithm(seq1, seq2, sim_matrix=utils.similarity_matrix
     similarity_score = 1.0 / (1 + distance)
     return run_traceback((rows-1, cols-1), traceback_matrix, seq1, seq2), (distance, similarity_score)
 
-print run_global_sequence_algorithm("GCATGCT", "GATTACA", utils.similarity_matrix)
+# print run_global_sequence_algorithm("GCATGCT", "GATTACA", utils.similarity_matrix)
 
 

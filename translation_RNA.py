@@ -16,13 +16,17 @@ slownik = {'UUU': 'F', 'UUC': 'F', 'UUA': 'L', 'UUG': 'L', 'UCU': 'S', 'UCC': 'S
            }
 
 
-def run_translation_DNA():
-    przykladowasekwencja = "ACCGCCAGCCGCGACGAGA"
+def nucleotyde_to_rna(nucleotyde):
+    if nucleotyde == "T":
+        return "U"
+    return nucleotyde
 
 
 def rna_to_protein(seq):
     listseq = list(seq)
     proteins = []
+
+    listseq = map(nucleotyde_to_rna, listseq)
 
     for x in range(0, len(listseq) - 3, 3):
         let = listseq[x]
@@ -30,17 +34,22 @@ def rna_to_protein(seq):
         let2 = listseq[x + 2]
         proteins.append(slownik[let + let1 + let2])
 
-        print proteins
+    proteins = filter(lambda aa: aa != "!", proteins)
 
     return "".join(proteins)
 
 
 def protein_to_RNA(seq):
     listseq = list(seq)
-    allkodons=[]
+    allkodons = []
     for x in range(len(listseq)):
-        kodons = filter(partial(is_pair_witch_protein,listseq[x]),slownik.iteritems())[0]
-        allkodons.append(kodons[0])
+        if listseq[x] == "-":
+            allkodons.append("---")
+        else:
+            kodons = filter(partial(is_pair_witch_protein, listseq[x]), slownik.iteritems())[0]
+            allkodons.append(kodons[0])
     return "".join(allkodons)
-def is_pair_witch_protein(proteins,pair):
-    return pair[1]==proteins
+
+
+def is_pair_witch_protein(proteins, pair):
+    return pair[1] == proteins
