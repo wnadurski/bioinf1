@@ -5,7 +5,7 @@ import handlers
 import translation_RNA
 from utils import get_input
 
-debug = True
+debug = False
 
 
 def print_ui():
@@ -35,12 +35,18 @@ def handle_ui(command):
 if __name__ == "__main__":
     print_ui()
 
-    while True:
-        try:
-            command = get_input()
-        except EOFError:
-            sys.exit()
-        handle_ui(command)
+    try:
+        while True:
+            try:
+                command = get_input()
+            except EOFError:
+                sys.exit()
 
+            handle_ui(command)
+
+
+            print ""
+            print_ui()
+    except KeyboardInterrupt:
         print ""
-        print_ui()
+        sys.exit()
