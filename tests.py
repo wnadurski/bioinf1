@@ -4,6 +4,8 @@ import handlers
 import local_seq
 import global_seq
 import utils
+from translation_RNA import rna_to_protein, protein_to_RNA
+
 
 class LocalSeqTests(unittest.TestCase):
 
@@ -43,7 +45,14 @@ class ParsingTests(unittest.TestCase):
             result = handlers.parse_matrix_file(f)
 
         self.assertEqual(expected, result)
-
+    def test_RNA_translation(self):
+        przykladowasekwencja = "ACCGCCAGCCGCGACGAGA"
+        protein=rna_to_protein(przykladowasekwencja)
+        self.assertEqual("TASRDE",protein)
+    def test_protein_translation(self):
+        przykladowasekwencja = "TASRDE"
+        protein=protein_to_RNA(przykladowasekwencja)
+        self.assertEqual("ACCGCGAGCCGGGAUGAA",protein)
 
 def main():
     unittest.main()

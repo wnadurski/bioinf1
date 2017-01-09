@@ -2,6 +2,7 @@ import sys
 
 import global_seq
 import handlers
+import translation_RNA
 from utils import get_input
 
 debug = True
@@ -18,7 +19,8 @@ def print_ui():
 command_map = {
     "x": sys.exit,
     "1": handlers.global_alignment,
-    "2": handlers.local_alignment
+    "2": handlers.local_alignment,
+    "3": translation_RNA.run_translation_DNA
 }
 
 
