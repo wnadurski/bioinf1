@@ -1,4 +1,6 @@
 import utils
+from global_seq import calculate_similarity, add_gaps_to_matrix
+
 
 def init_score_matrix(rows, cols):
     matrix = utils.zeros_matrix(rows, cols)
@@ -11,27 +13,27 @@ def init_score_matrix(rows, cols):
     return matrix
 
 
-def run_traceback(a, dupa, seq1, seq2):
+def run_traceback(a, traceback_matrix, seq1, seq2):
     aseq1, aseq2 = "", ""
 
     i, j, dummy = a
 
     while i > 0 or j > 0:
 
-        if i > 0 and j > 0 and dupa[i][j] == 'diag':
+        if i > 0 and j > 0 and traceback_matrix[i][j] == 'diag':
             aseq1 = seq1[i - 1] + aseq1
             aseq2 = seq2[j - 1] + aseq2
             i -= 1
             j -= 1
-        elif i > 0 and dupa[i][j] == 'top':
+        elif i > 0 and traceback_matrix[i][j] == 'top':
             aseq1 = seq1[i - 1] + aseq1
             aseq2 = '-' + aseq2
             i -= 1
-        elif j > 0 and dupa[i][j] == 'left':
+        elif j > 0 and traceback_matrix[i][j] == 'left':
             aseq1 = '-' + aseq1
             aseq2 = seq2[j - 1] + aseq2
             j -= 1
-        elif dupa[i][j] == 'end' or dupa[i][j] == 0:
+        elif traceback_matrix[i][j] == 'end' or traceback_matrix[i][j] == 0:
             return aseq1, aseq2
 
     return aseq1, aseq2
@@ -62,10 +64,12 @@ def run_fill_phase(score_matrix, traceback_matrix, distance_matrix, sim_matrix, 
     return traceback_matrix
 
 
-def run_local_sequence_algorithm(seq1, seq2, sim_matrix, gap_penalty=0):
+def run_local_sequence_algorithm(seq1, seq2, sim_matrix, gap_penalty=-2):
 
     rows = len(seq1) + 1
     cols = len(seq2) + 1
+
+    add_gaps_to_matrix(sim_matrix, gap_penalty)
 
     score_matrix = init_score_matrix(rows, cols)
     traceback_matrix = init_score_matrix(rows, cols)
@@ -75,7 +79,7 @@ def run_local_sequence_algorithm(seq1, seq2, sim_matrix, gap_penalty=0):
     max_index = utils.matrix_max_index(score_matrix)
     result = run_traceback(max_index, traceback_matrix, seq1, seq2)
     distance = levenshtein_matrix[rows - 1][cols - 1]
-    similarity_score = 1.0 / (1 + distance)
+    similarity_score = calculate_similarity(result, sim_matrix)
 
     return result, (distance, similarity_score)
 

@@ -9,8 +9,8 @@ debug = False
 
 
 def print_ui():
-    print "1 - wyznaczanie globalnej sekwencji (Needleman-Wunsh)"
-    print "2 - wyznaczanie lokalnej sekwencji (Smith-Waterman)"
+    print "1 - wyznaczanie globalnego zestawienia (Needleman-Wunsh)"
+    print "2 - wyznaczanie lokalnego zestawienia (Smith-Waterman)"
     print "x - Wyjscie"
 
 

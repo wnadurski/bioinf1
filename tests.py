@@ -34,6 +34,18 @@ class GlobalSeqTests(unittest.TestCase):
         result = global_seq.run_global_sequence_algorithm(seq1, seq2, sim_matrix, -4)[0]
         self.assertEquals(expected, result)
 
+    def test_short(self):
+        seq1 = "ACGACG"
+        seq2 = "ACGAT"
+        expected = "ACGACG", "ACGA-T"
+        sim_matrix = utils.make_similarity_matrix(1, -2)
+        result = global_seq.run_global_sequence_algorithm(seq1, seq2, sim_matrix, -2)[0]
+        self.assertEquals(expected, result)
+
+    def distance_test(self):
+
+
+
 
 class ParsingTests(unittest.TestCase):
     def test_matrix_parses_simple_matrix(self):
